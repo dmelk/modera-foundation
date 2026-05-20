@@ -14,6 +14,8 @@ Ext.define('Modera.backend.tools.settings.view.HostPanel', {
     titleText: 'Settings',
     noSectionsMessageText: 'No sections available',
     noSectionSelectedText: 'No section selected',
+    exportConfigText: 'Export config',
+    importConfigText: 'Import config',
 
     /**
      * @param {Object} config
@@ -45,7 +47,21 @@ Ext.define('Modera.backend.tools.settings.view.HostPanel', {
                         cls: 'text',
                         html: this.noSectionSelectedText
                     },
-                    '->'
+                    '->',
+                    {
+                        xtype: 'button',
+                        itemId: 'exportConfigButton',
+                        text: this.exportConfigText,
+                        hidden: true,
+                        handler: Ext.emptyFn
+                    },
+                    {
+                        xtype: 'button',
+                        itemId: 'importConfigButton',
+                        text: this.importConfigText,
+                        hidden: true,
+                        handler: Ext.emptyFn
+                    }
                 ]
             },
             items: {
@@ -175,6 +191,26 @@ Ext.define('Modera.backend.tools.settings.view.HostPanel', {
         }
 
         return false;
+    },
+
+    /**
+     * @param {Boolean} visible
+     */
+    setExportButtonVisible: function(visible) {
+        var btn = this.down('#exportConfigButton');
+        if (btn) {
+            btn.setVisible(visible);
+        }
+    },
+
+    /**
+     * @param {Boolean} visible
+     */
+    setImportButtonVisible: function(visible) {
+        var btn = this.down('#importConfigButton');
+        if (btn) {
+            btn.setVisible(visible);
+        }
     },
 
     // private
