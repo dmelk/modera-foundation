@@ -78,8 +78,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.x-dev",
-            "feature/CLS-14248": "feature-CLS-14248"
+            "dev-master": "6.x-dev"
         },
         "modera-monorepo": {
             "require-dev": {
