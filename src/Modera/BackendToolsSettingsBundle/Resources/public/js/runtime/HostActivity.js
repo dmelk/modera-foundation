@@ -55,6 +55,8 @@ Ext.define('Modera.backend.tools.settings.runtime.HostActivity', {
                     }
                 });
 
+                me.sectionActivities = activities;
+
                 me.zones = [
                     {
                         id: 'main',
@@ -71,6 +73,10 @@ Ext.define('Modera.backend.tools.settings.runtime.HostActivity', {
                         controller: function(rootUi, zoneUi, activityIdToUse, onProcessedCallback) {
                             rootUi.showSection(activityIdToUse);
 
+                            var activity = activities[activityIdToUse];
+                            me.applyActivityToExportButton(rootUi, activity);
+                            me.applyActivityToImportButton(rootUi, activity);
+
                             onProcessedCallback();
                         }
                     }
@@ -80,10 +86,42 @@ Ext.define('Modera.backend.tools.settings.runtime.HostActivity', {
         }
     },
 
+    // private
+    applyActivityToExportButton: function(ui, activity) {
+        var visible = !!(activity && activity.showExportButton);
+        ui.setExportButtonVisible(visible);
+
+        var exportBtn = ui.down('#exportConfigButton');
+        if (exportBtn) {
+            exportBtn.setHandler(visible && Ext.isFunction(activity.exportConfig)
+                ? function() { activity.exportConfig(); }
+                : Ext.emptyFn
+            );
+        }
+    },
+
+    // private
+    applyActivityToImportButton: function(ui, activity) {
+        var visible = !!(activity && activity.showImportButton);
+        ui.setImportButtonVisible(visible);
+
+        var importBtn = ui.down('#importConfigButton');
+        if (importBtn) {
+            importBtn.setHandler(visible && Ext.isFunction(activity.importConfig)
+                ? function() { activity.importConfig(); }
+                : Ext.emptyFn
+            );
+        }
+    },
+
     // override
     attachListeners: function(ui) {
+        var me = this;
         ui.on('showsection', function(grid, params) {
             ui.showSection(params.id);
+            var activity = me.sectionActivities && me.sectionActivities[params.id];
+            me.applyActivityToExportButton(ui, activity);
+            me.applyActivityToImportButton(ui, activity);
         });
     },
 
